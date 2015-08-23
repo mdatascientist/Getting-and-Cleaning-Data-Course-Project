@@ -54,7 +54,7 @@ Create one R script called run_analysis.R that does the following
 <br><br>
 2.	EXTRACT ONLY THE MEASUREMENTS ON THE MEAN AND STANDARD DEVIATION FOR EACH MEASUREMENT.
     
-    - Use grep to find the columns containing measn and std.
+    - Use grep to find the columns containing means and std.
     -	Temporarily extract the mean and standard deviation columns, will rename in STEP 4.  (I could have renamed all the columns here,  however that would negate the need for STEP 4).
 <br><br>
 3.	USE DESCRIPTIVE ACTIVITY NAMES TO NAME THE ACTIVITIES IN THE DATA SET
