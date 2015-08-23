@@ -1,8 +1,4 @@
----
-output: 
-  html_document: 
-    theme: spacelab
----
+
 ### CODEBOOK - GETTING AND CLEANING DATA PROJECT 2
 
 #### PROJECT DESCRIPTION:

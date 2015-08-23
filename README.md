@@ -1,8 +1,4 @@
----
-output: 
-  html_document: 
-    theme: spacelab
----
+
 # Getting and Cleaning Data: Course Project (2015)
 ## Introduction
 This repository contains the files associated with the Getting and Cleaning data course project.  
