@@ -93,7 +93,7 @@ Create one R script called run_analysis.R that does the following
     
     *NOTE: row.names = FALSE, otherwise an extra column is added to the beginning of the line*
 
-    - Finally write the Very Tidy Data to a file (tidyData.csv)
+    - Finally write the Very Tidy Data to a file (tidyData.txt)
 
 #### TRANSFORMATIONS: TIDY DATA FILE TO ORIGINAL COLUMN NAMES FOR MEAN AND STANDARD DEVIATION: 
 
