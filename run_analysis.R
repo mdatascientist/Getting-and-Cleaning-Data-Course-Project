@@ -24,29 +24,28 @@ run_analysis <- function(){
   library(dplyr)
   
   #######################################################################################
-  # Import the test data files (X_test & Y_test = 2947 rows)
+  # Import the test data files (X_test & Y_test & subject_test = 2947 rows)
   #######################################################################################
   X_test <- read.table("./Data/UCI HAR Dataset/test/X_test.txt",sep = "",header = FALSE)
   Y_test <- read.table("./Data/UCI HAR Dataset/test/Y_test.txt",sep = "",header = FALSE)
   names(Y_test) <- c("activity")
+  
+  subject_test <- read.table("./Data/UCI HAR Dataset/test/subject_test.txt")
+  names(subject_test) <- c("subject") 
 
   #######################################################################################
-  # Import the train data files (X_train & Y_train = 7352 rows)
+  # Import the train data files (X_train & Y_train & subject_train = 7352 rows)
   #######################################################################################
   X_train <- read.table("./Data/UCI HAR Dataset/train/X_train.txt",sep = "",header = FALSE)
   Y_train <- read.table("./Data/UCI HAR Dataset/train/Y_train.txt",sep = "",header = FALSE)
   names(Y_train) <- c("activity")
-
-  #######################################################################################
-  # Import the reference data files
-  #######################################################################################
-  
-  # SUBJECTS
-  subject_test <- read.table("./Data/UCI HAR Dataset/test/subject_test.txt")
-  names(subject_test) <- c("subject") 
   
   subject_train <- read.table("./Data/UCI HAR Dataset/train/subject_train.txt")
   names(subject_train) <- c("subject") 
+  
+  #######################################################################################
+  # Import the reference data files
+  #######################################################################################
   
   # ACTIVITIES
   activity_labels <- read.table("./Data/UCI HAR Dataset/activity_labels.txt",header = FALSE,sep = "")
@@ -59,7 +58,10 @@ run_analysis <- function(){
   #######################################################################################
   # STEP 1: Merges the training and the test sets to create one data set.
   #######################################################################################
-  XYCombined <- rbind(X_test,X_train)
+  bind_test <- cbind(X_test,Y_test,subject_test)
+  bind_train <- cbind(X_train,Y_train,subject_train)
+  
+  XYCombined <- rbind(bind_test,bind_train)
   
   #######################################################################################
   # STEP 2: Extracts only the measurements on the mean and standard deviation for
@@ -69,7 +71,7 @@ run_analysis <- function(){
   # Temporarily extract the mean and standard deviation columns, will rename in STEP 4
   # I could have renamed all the columns here, however that would negate the need for
   # STEP 4
-  means_stds <- features[grep("(mean|std)\\(", features[,2]),]
+  means_stds <- features[grep("[Mm]ean|[Ss]td", features[,2]),]
   XYCombinedMS <- XYCombined[,means_stds[,1]]
 
   #######################################################################################
@@ -82,16 +84,9 @@ run_analysis <- function(){
   # 4 = SITTING
   # 5 = STANDING
   # 6 = LAYING
-   
-  #Add Subject Id to datasets
-  subjects <- rbind(subject_test,subject_train)
   
-  #Add Activity Id to datasets
-  activity <- rbind(Y_test,Y_train)
-  
-  XYCombinedSA <- cbind(subjects,activity,XYCombinedMS)
-  
-  XYCombinedSA$activity <- factor(XYCombinedSA$activity
+  #Update activity_id to descriptive activity name
+  XYCombined$activity <- factor(XYCombined$activity
                                    ,levels = activity_labels$activity_id
                                    ,labels = activity_labels$activity)
   
@@ -101,17 +96,16 @@ run_analysis <- function(){
   # TAKEN FROM DISCUSSION FORUM: David's very long and detailed project FAQ
   # Is step 4 the same as step 3
   # Since it say labels the data set it is talking about the variable names 
-  # (which at the moment are V1, V2, etc.... XYCombinedSA for me!
+  # (which at the moment are V1, V2, etc....
   # 
   # Add the features column names to the tidy data output
-  # NOTE: Remember that columns 1 and 2 contain the subject and activity
   #######################################################################################
   
-  feature_names <- features[grep("(mean|std)\\(", features[,2]),]
-  XYCombinedFeatures <- XYCombinedSA[3:68]
+  feature_names <- features[grep("[Mm]ean|[Ss]td", features[,2]),]
+  XYCombinedFeatures <- XYCombinedMS[1:86]
   
   colnames(XYCombinedFeatures) <- feature_names[,2]
-  XYCombinedLabeled <- cbind(XYCombinedSA[1:2],XYCombinedFeatures)
+  XYCombinedLabeled <- cbind(XYCombined[562:563],XYCombinedFeatures)
   
   #######################################################################################
   # STEP 5: From the data set in step 4, creates a second, independent tidy data set 
@@ -129,7 +123,7 @@ run_analysis <- function(){
                                    ,decreasing = FALSE),]
   
   #######################################################################################
-  # Use semi-colon as separator as feature names contain commas, 
+  # Use semi-colon as separator as some feature names contain commas, 
   # e.g. tBodyAcc-arCoeff()-X,1 (the mean and std columns do not have this issue,
   #       however, if all the columns are used this would be appropriate)
   # this can cause column heading issues if using the data in Excel,etc...
