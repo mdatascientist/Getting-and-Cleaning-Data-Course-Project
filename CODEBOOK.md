@@ -22,7 +22,7 @@
 
 	<https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip>
 
- ![Alt UCI HAR dataset](D:\COURSERA\GettingAndCleaningData\UCIHARDataset.png)
+ ![Alt UCI HAR dataset](https://github.com/mdatascientist/Getting-and-Cleaning-Data-Course-Project/blob/master/UCIHARDataset.png)
 
 -	LIBRARIES
 
